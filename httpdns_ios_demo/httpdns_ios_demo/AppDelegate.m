@@ -23,19 +23,14 @@
     
     // 设置AccoutID
     [httpdns setAccountID:139450];
+    // [httpdns setAccountID:142208];
     // 为HTTPDNS服务设置降级机制
     [httpdns setDelegateForDegradationFilter:(id < HttpDNSDegradationDelegate >)self];
     // 允许返回过期的IP
     [httpdns setExpiredIPEnabled:YES];
-    // 打开HTTPDNS Log，线上建议关闭
-    //[httpdns setLogEnabled:YES];
-    /*
-     *  设置HTTPDNS域名解析请求类型(HTTP/HTTPS)，若不调用该接口，默认为HTTP请求；
-     *  SDK内部HTTP请求基于CFNetwork实现，不受ATS限制。
-     */
-    //[httpdns setHTTPSRequestEnabled:YES];
+    [httpdns setLogEnabled:YES];
     // edited
-    NSArray *preResolveHosts = @[ @"www.aliyun.com", @"www.taobao.com", @"gw.alicdn.com", @"www.tmall.com", @"dou.bz"];
+    NSArray *preResolveHosts = @[ @"www.aliyun.com", @"www.taobao.com", @"gw.alicdn.com", @"www.tmall.com" ];
     // NSArray* preResolveHosts = @[@"pic1cdn.igetget.com"];
     // 设置预解析域名列表
     [httpdns setPreResolveHosts:preResolveHosts];

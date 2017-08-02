@@ -6,6 +6,7 @@
 //  Copyright © 2016年 alibaba. All rights reserved.
 //
 
+#import "CFHttpMessageURLProtocol.h"
 #import "HTTPSSceneViewController.h"
 #import <AlicloudHttpDNS/AlicloudHttpDNS.h>
 

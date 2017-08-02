@@ -1,13 +1,13 @@
 //
-//  MainViewController.h
+//  WebViewController.h
 //  httpdns_ios_demo
 //
-//  Created by DaveLam on 16/7/3.
+//  Created by fuyuan.lfy on 16/6/25.
 //  Copyright © 2016年 alibaba. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface MainViewController : UIViewController
+@interface WebViewController : UIViewController
 
 @end

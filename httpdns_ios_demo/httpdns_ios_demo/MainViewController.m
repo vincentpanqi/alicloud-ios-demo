@@ -10,6 +10,8 @@
 #import "MainViewController.h"
 #import "ViewController.h"
 #import "HTTPSSceneViewController.h"
+#import "WebViewController.h"
+#import "SNIViewController.h"
 
 @interface MainViewController ()
 
