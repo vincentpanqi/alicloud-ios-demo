@@ -95,25 +95,25 @@ static HttpDnsService *httpdns;
     // Dispose of any resources that can be recreated.
 }
 
-/*
- * 降级过滤器，您可以自己定义HTTPDNS降级机制
- */
-- (BOOL)shouldDegradeHTTPDNS:(NSString *)hostName {
-    NSLog(@"Enters Degradation filter.");
-    // 根据HTTPDNS使用说明，存在网络代理情况下需降级为Local DNS
-    if ([NetworkManager configureProxies]) {
-        NSLog(@"Proxy was set. Degrade!");
-        return YES;
-    }
-    
-    // 假设您禁止"www.taobao.com"域名通过HTTPDNS进行解析
-    if ([hostName isEqualToString:@"www.taobao.com"]) {
-        NSLog(@"The host is in blacklist. Degrade!");
-        return YES;
-    }
-    
-    return NO;
-}
+///*
+// * 降级过滤器，您可以自己定义HTTPDNS降级机制
+// */
+//- (BOOL)shouldDegradeHTTPDNS:(NSString *)hostName {
+//    NSLog(@"Enters Degradation filter.");
+//    // 根据HTTPDNS使用说明，存在网络代理情况下需降级为Local DNS
+//    if ([NetworkManager configureProxies]) {
+//        NSLog(@"Proxy was set. Degrade!");
+//        return YES;
+//    }
+//    
+//    // 假设您禁止"www.taobao.com"域名通过HTTPDNS进行解析
+//    if ([hostName isEqualToString:@"www.taobao.com"]) {
+//        NSLog(@"The host is in blacklist. Degrade!");
+//        return YES;
+//    }
+//    
+//    return NO;
+//}
 
 
 @end

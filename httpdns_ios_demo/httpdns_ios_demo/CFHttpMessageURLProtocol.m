@@ -10,7 +10,7 @@
 #import "NetworkManager.h"
 #import <AlicloudHttpDNS/AlicloudHttpDNS.h>
 #import <objc/runtime.h>
-#import "NSMutableURLRequest+CYLNSURLProtocolExtension.h"
+#import "NSURLRequest+CYLNSURLProtocolExtension.h"
 
 #define protocolKey @"CFHttpMessagePropertyKey"
 #define kAnchorAlreadyAdded @"AnchorAlreadyAdded"
@@ -292,6 +292,7 @@
                     NSData *data = [[NSData alloc] initWithBytes:buf length:length];
                     
                     [self.client URLProtocol:self didLoadData:data];
+                    NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), data);
                 }
             } else {
                 // 证书已验证过，返回数据
@@ -301,7 +302,7 @@
                     length = amount;
                 }
                 NSData *data = [[NSData alloc] initWithBytes:buf length:length];
-                
+                NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), data);
                 [self.client URLProtocol:self didLoadData:data];
             }
         }

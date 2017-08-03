@@ -22,10 +22,10 @@
     HttpDnsService *httpdns = [HttpDnsService sharedInstance];
     
     // 设置AccoutID
-    [httpdns setAccountID:139450];
+    [httpdns setAccountID:191863];
     // [httpdns setAccountID:142208];
     // 为HTTPDNS服务设置降级机制
-    [httpdns setDelegateForDegradationFilter:(id < HttpDNSDegradationDelegate >)self];
+//    [httpdns setDelegateForDegradationFilter:(id < HttpDNSDegradationDelegate >)self];
     // 允许返回过期的IP
     [httpdns setExpiredIPEnabled:YES];
     [httpdns setLogEnabled:YES];

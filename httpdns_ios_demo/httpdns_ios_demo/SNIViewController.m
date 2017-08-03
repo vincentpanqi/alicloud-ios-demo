@@ -28,6 +28,8 @@
     HttpDnsService *httpdns = [HttpDnsService sharedInstance];
     
     // 需要设置SNI的URL
+//    NSString *originalUrl = @"https://dou.bz/23o8PS";
+
     NSString *originalUrl = @"https://dou.bz/23o8PS";
     NSURL *url = [NSURL URLWithString:originalUrl];
     self.request = [[NSMutableURLRequest alloc] initWithURL:url];
@@ -73,7 +75,14 @@
      NSArray *protocolArray = @[ [CFHttpMessageURLProtocol class] ];
      configuration.protocolClasses = protocolArray;
      NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:[NSOperationQueue mainQueue]];
-     NSURLSessionTask *task = [session dataTaskWithRequest:_request];
+     NSURLSessionTask *task = [session dataTaskWithRequest:_request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+         if (error) {
+             NSLog(@"🔴类名与方法名：%@（在第%@行），error描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), error);
+         } else {
+             NSLog(@"🔴类名与方法名：%@（在第%@行），response描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), response);
+             //            NSLog(@"data: %@", data);
+         }
+     }];
      [task resume];
 }
 

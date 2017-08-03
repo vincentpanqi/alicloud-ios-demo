@@ -8,9 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSMutableURLRequest (CYLNSURLProtocolExtension)
+@interface NSURLRequest (CYLNSURLProtocolExtension)
 
 - (NSMutableURLRequest *)cyl_getPostRequestIncludeBody;
+
+@end
+
+
+@interface NSMutableURLRequest (CYLNSURLProtocolExtension)
 
 - (void)cyl_handlePostRequestBody;
 

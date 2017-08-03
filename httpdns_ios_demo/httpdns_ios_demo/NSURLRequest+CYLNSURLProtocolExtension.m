@@ -6,11 +6,9 @@
 //  Copyright © 2017 alibaba. All rights reserved.
 //
 
-#import "NSMutableURLRequest+CYLNSURLProtocolExtension.h"
+#import "NSURLRequest+CYLNSURLProtocolExtension.h"
 
-@implementation NSMutableURLRequest (CYLNSURLProtocolExtension)
-
-#pragma mark 处理POST请求相关POST  用HTTPBodyStream来处理BODY体
+@implementation NSURLRequest (CYLNSURLProtocolExtension)
 
 - (NSMutableURLRequest *)cyl_getPostRequestIncludeBody {
     NSMutableURLRequest * req = [self mutableCopy];
@@ -32,6 +30,10 @@
     }
     return req;
 }
+
+@end
+
+@implementation NSMutableURLRequest (CYLNSURLProtocolExtension)
 
 - (void)cyl_handlePostRequestBody {
     if ([self.HTTPMethod isEqualToString:@"POST"]) {
