@@ -35,7 +35,18 @@
      */
     //[httpdns setHTTPSRequestEnabled:YES];
     // edited
-    NSArray *preResolveHosts = @[ @"www.aliyun.com", @"www.taobao.com", @"gw.alicdn.com", @"www.tmall.com", @"dou.bz", @"book.douban.com"];
+    NSArray *preResolveHosts = @[ @"www.aliyun.com",
+                                  @"www.taobao.com",
+                                  @"gw.alicdn.com",
+                                  @"www.tmall.com",
+                                  @"dou.bz",
+                                  @"book.douban.com",
+                                  @"m.m.58.com",
+                                  @"58.com",
+                                  @"m.58.com",
+                                  @"cdata.58.com",
+                                  @"passport.58.com"
+                                  ];
     // NSArray* preResolveHosts = @[@"pic1cdn.igetget.com"];
     // 设置预解析域名列表
     [httpdns setPreResolveHosts:preResolveHosts];
