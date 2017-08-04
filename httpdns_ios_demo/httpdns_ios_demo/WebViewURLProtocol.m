@@ -11,6 +11,7 @@
 #import <objc/runtime.h>
 #import <arpa/inet.h>
 #import "NSURLRequest+CYLNSURLProtocolExtension.h"
+#import <UIKit/UIKit.h>
 
 #define protocolKey @"CFHttpMessagePropertyKey"
 #define kAnchorAlreadyAdded @"AnchorAlreadyAdded"
@@ -22,7 +23,17 @@
 @end
 
 @implementation WebViewURLProtocol
-
+static BOOL donotHandle = NO;
++ (void)initialize {
+    [[NSNotificationCenter defaultCenter] addObserverForName:
+     UIApplicationDidReceiveMemoryWarningNotification
+                                                      object:[UIApplication sharedApplication] queue:nil
+                                                  usingBlock:^(NSNotification *notif) {
+                                                      //your code here
+                                                      donotHandle = YES;
+                                                      NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), @"");
+                                                  }];
+}
 /**
  *  是否拦截处理指定的请求
  *
@@ -32,6 +43,10 @@
  */
 + (BOOL)canInitWithRequest:(NSURLRequest *)request {
     
+    if (donotHandle) {
+        NSLog(@"HTTPDNS can't resolve [%@] now.", request.URL.host);
+        return NO;
+    }
     /* 防止无限循环，因为一个请求在被拦截处理过程中，也会发起一个请求，这样又会走到这里，如果不进行处理，就会造成无限循环 */
     if ([NSURLProtocol propertyForKey:protocolKey inRequest:request]) {
         return NO;
