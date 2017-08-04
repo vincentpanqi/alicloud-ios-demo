@@ -8,6 +8,7 @@
 
 #import "HTTPSSceneViewController.h"
 #import <AlicloudHttpDNS/AlicloudHttpDNS.h>
+#import "CFHTTPDNSHTTPProtocol.h"
 
 @interface HTTPSSceneViewController () <NSURLConnectionDelegate, NSURLSessionTaskDelegate, NSURLConnectionDataDelegate, NSURLSessionDataDelegate>
 @property (nonatomic, strong) NSMutableURLRequest *request;
@@ -21,35 +22,43 @@
     
     // 初始化httpdns实例
     HttpDnsService *httpdns = [HttpDnsService sharedInstance];
-    
-    NSString *originalUrl = @"https://www.apple.com";
+    [NSURLProtocol registerClass:[CFHTTPDNSHTTPProtocol class]];
+
+    NSString *originalUrl = @"https://dou.bz/23o8PS";
     NSURL *url = [NSURL URLWithString:originalUrl];
     self.request = [[NSMutableURLRequest alloc] initWithURL:url];
+    _request.HTTPMethod = @"POST";
+    _request.HTTPBody = [@"I am HTTPBody" dataUsingEncoding:NSUTF8StringEncoding];
     
-    NSString *ip = [httpdns getIpByHostAsync:url.host];
-    if (ip) {
-        // 通过HTTPDNS获取IP成功，进行URL替换和HOST头设置
-        NSLog(@"Get IP(%@) for host(%@) from HTTPDNS Successfully!", ip, url.host);
-        NSRange hostFirstRange = [originalUrl rangeOfString:url.host];
-        if (NSNotFound != hostFirstRange.location) {
-            NSString *newUrl = [originalUrl stringByReplacingCharactersInRange:hostFirstRange withString:ip];
-            NSLog(@"New URL: %@", newUrl);
-            self.request.URL = [NSURL URLWithString:newUrl];
-            [self.request setValue:url.host forHTTPHeaderField:@"host"];
-        }
-    }
+//    NSString *ip = [httpdns getIpByHostAsync:url.host];
+//    if (ip) {
+//        // 通过HTTPDNS获取IP成功，进行URL替换和HOST头设置
+//        NSLog(@"Get IP(%@) for host(%@) from HTTPDNS Successfully!", ip, url.host);
+//        NSRange hostFirstRange = [originalUrl rangeOfString:url.host];
+//        if (NSNotFound != hostFirstRange.location) {
+//            NSString *newUrl = [originalUrl stringByReplacingCharactersInRange:hostFirstRange withString:ip];
+//            NSLog(@"New URL: %@", newUrl);
+//            self.request.URL = [NSURL URLWithString:newUrl];
+//            [self.request setValue:url.host forHTTPHeaderField:@"host"];
+//            NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), url.host);
+//        }
+//    }
     // NSURLConnection例子
     // NSURLConnection* connection = [[NSURLConnection alloc] initWithRequest:self.request delegate:self startImmediately:YES];
     
     // NSURLSession例子
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSArray *protocolArray = @[ [CFHTTPDNSHTTPProtocol class] ];
+    configuration.protocolClasses = protocolArray;
+    
     NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
-    NSURLSessionTask *task = [session dataTaskWithRequest:self.request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+    
+        NSURLSessionTask *task = [session dataTaskWithRequest:self.request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         if (error) {
             NSLog(@"error: %@", error);
         } else {
             NSLog(@"response: %@", response);
-            NSLog(@"data: %@", data);
+//            NSLog(@"data: %@", data);
         }
     }];
     [task resume];
@@ -171,6 +180,23 @@
     completionHandler(disposition, credential);
 }
 
+#pragma mark NSURLSessionDataDelegate
+- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data {
+    NSLog(@"data: %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+}
+
+- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveResponse:(NSURLResponse *)response completionHandler:(void (^)(NSURLSessionResponseDisposition))completionHandler {
+    NSLog(@"response: %@", response);
+    completionHandler(NSURLSessionResponseAllow);
+}
+
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
+    if (error) {
+        NSLog(@"error: %@", error);
+    }
+    else
+        NSLog(@"complete");
+}
 /*
  #pragma mark - Navigation
  
