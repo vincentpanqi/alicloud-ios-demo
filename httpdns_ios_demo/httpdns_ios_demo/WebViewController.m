@@ -25,9 +25,16 @@ static BOOL  CYLUSEIP = YES;
 //static NSString *const  CYLOriginalUrl = @"http://m.58.com/bj/";
 
 
-static NSString *const CYLIP = @"115.159.231.166";
-static NSString *const CYLHOST = @"m.m.58.com";
-static NSString *const  CYLOriginalUrl = @"http://m.m.58.com/?58hm=m_my58_new&58cid=1";
+//static NSString *const CYLIP = @"115.159.231.166";
+//static NSString *const CYLHOST = @"m.m.58.com";
+//static NSString *const  CYLOriginalUrl = @"http://m.m.58.com/?58hm=m_my58_new&58cid=1";
+
+
+static NSString *const CYLIP = @"115.159.231.178";
+static NSString *const CYLHOST = @"3g.ganji.com";
+static NSString *const  CYLOriginalUrl = @"http://3g.ganji.com";
+
+
 
 @interface WebViewController ()
 <WKNavigationDelegate ,
