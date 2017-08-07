@@ -32,7 +32,7 @@ static BOOL  CYLUSEIP = YES;
 
 static NSString *const CYLIP = @"115.159.231.178";
 static NSString *const CYLHOST = @"3g.ganji.com";
-static NSString *const  CYLOriginalUrl = @"http://3g.ganji.com";
+static NSString *const  CYLOriginalUrl = @"http://3g.ganji.com/?wapadprurl2=adurl";
 
 
 
@@ -586,6 +586,8 @@ WKHTTPCookieStoreObserver
                 dict[NSHTTPCookieDomain] = host;
                 NSHTTPCookie *newCookie = [NSHTTPCookie cookieWithProperties:[dict copy]];
                 [cookieStroe setCookie:newCookie completionHandler:^{
+                    [self logCookies];
+                    //FIXME: `-[WKHTTPCookieStore deleteCookie:]` 在 iOS11-beta3 中依然有bug，不会执行。（后续正式版修复后，再更新该注视。）
                     [cookieStroe deleteCookie:cookie
                             completionHandler:^{
                                 [self logCookies];
@@ -633,12 +635,12 @@ WKHTTPCookieStoreObserver
     return cookie;
 }
 
-- (void)cookiesDidChangeInCookieStore:(WKHTTPCookieStore *)cookieStore {
-    [cookieStore getAllCookies:^(NSArray<NSHTTPCookie *> * _Nonnull cookies) {
-        NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), cookies);
-    }];
-    //    [self updateNSHTTPCookieStorageDomainFromIP:CYLIP toHost:CYLHOST];
-}
+#pragma mark -
+#pragma mark - WKHTTPCookieStoreObserver Delegate Method
 
+//每次setCookie，都会被回调。这里可能会有重复检查所有的Cookie的步骤。
+- (void)cookiesDidChangeInCookieStore:(WKHTTPCookieStore *)cookieStore {
+    [self updateWKHTTPCookieStoreDomainFromIP:CYLIP toHost:CYLHOST];
+}
 
 @end
