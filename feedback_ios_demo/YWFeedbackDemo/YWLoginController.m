@@ -134,6 +134,7 @@ static NSString * const kAppSecret = @"";
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
     [weakSelf.navigationController presentViewController:nav animated:YES completion:nil];
 }
+
 - (IBAction)actionUnreadCount:(id)sender {
     [self fetchUnreadCount];
 }
