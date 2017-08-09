@@ -42,7 +42,7 @@ static BOOL donotHandle = NO;
  *  @return 返回YES表示要拦截处理，返回NO表示不拦截处理
  */
 + (BOOL)canInitWithRequest:(NSURLRequest *)request {
-    
+    NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), request);
     if (donotHandle) {
         NSLog(@"HTTPDNS can't resolve [%@] now.", request.URL.host);
         return NO;
