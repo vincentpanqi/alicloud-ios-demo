@@ -93,10 +93,6 @@ static NSString *recursiveRequestFlagProperty = @"com.aliyun.httpdns";
     //TODO:
     NSMutableURLRequest *recursiveRequest = [self.request cyl_getPostRequestIncludeBody];
 //    NSMutableURLRequest *recursiveRequest = [[self request] mutableCopy];
-
-    NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), recursiveRequest);
-
-
     [NSURLProtocol setProperty:@YES forKey:recursiveRequestFlagProperty inRequest:recursiveRequest];
     self.startTime = [NSDate timeIntervalSinceReferenceDate];
     // 构造CFHTTPDNSRequestTask，基于CFNetwork发送HTTPS请求
@@ -105,9 +101,6 @@ static NSString *recursiveRequestFlagProperty = @"com.aliyun.httpdns";
     self.task = [[CFHTTPDNSRequestTask alloc] initWithURLRequest:recursiveRequest swizzleRequest:swizzleRequest delegate:self];
     if (self.task) {
         [self.task startLoading];
-//        self.task.taskID = [self changeToNextRequetNumber];
-//        [self setBeginTimeForTaskID:self.task.taskID];
-        
         self.task.taskID = [CYLRequestTimeMonitor changeToNextRequetNumber];
         [CYLRequestTimeMonitor setBeginTimeForTaskID:self.task.taskID];
     }
@@ -123,97 +116,6 @@ static NSString *recursiveRequestFlagProperty = @"com.aliyun.httpdns";
         self.task = nil;
     }
 }
-
-//#pragma mark CFHTTPDNSRequestTask Protocol
-//
-//static NSString *const CYLRequestFrontNumber = @"CYLRequestFrontNumber";
-//static NSString *const CYLRequestBeginTime = @"CYLRequestBeginTime";
-//static NSString *const CYLRequestEndTime = @"CYLRequestEndTime";
-//static NSString *const CYLRequestSpentTime = @"CYLRequestSpentTime";
-//
-//- (NSString *)requestBeginTimeKeyWithID:(NSUInteger)ID {
-//    return [self getKey:CYLRequestBeginTime ID:ID];
-//}
-//
-//- (NSString *)requestEndTimeKeyWithID:(NSUInteger)ID {
-//    return [self getKey:CYLRequestEndTime ID:ID];
-//}
-//
-//- (NSString *)requestSpentTimeKeyWithID:(NSUInteger)ID {
-//    return [self getKey:CYLRequestSpentTime ID:ID];
-//}
-//
-//- (NSString *)getKey:(NSString *)key ID:(NSUInteger)ID {
-//    NSString *timeKeyWithID = [NSString stringWithFormat:@"%@-%@", @(ID), key];
-//    return timeKeyWithID;
-//}
-//
-//- (NSUInteger)timeFromKey:(NSString *)key {
-//    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-//    NSUInteger time = [defaults integerForKey:key];
-//    return time ?: 0;
-//}
-//
-//- (NSUInteger)frontRequetNumber {
-//    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-//   NSUInteger frontNumber = [defaults integerForKey:CYLRequestFrontNumber];
-//    return frontNumber ?: 0;
-//}
-//
-//- (NSUInteger)changeToNextRequetNumber {
-//    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-//    NSUInteger nextNumber = ([self frontRequetNumber]+ 1);
-//    [defaults setInteger:nextNumber forKey:CYLRequestFrontNumber];
-//    [defaults synchronize];
-//    return nextNumber;
-//}
-//
-//- (void)setCurrentTimeForKey:(NSString *)key taskID:(NSUInteger)taskID time:(NSTimeInterval *)time {
-////    NSString *keyWithID = [self getKey:key ID:taskID];
-////    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-//    NSTimeInterval currentTime = [[NSDate date] timeIntervalSince1970]*1000;
-//    *time = currentTime;
-////    [defaults setInteger:currentTime forKey:keyWithID];
-////    [defaults synchronize];
-//    [self setTime:currentTime key:key taskID:taskID];
-//}
-//
-//- (void)setTime:(NSUInteger)time key:(NSString *)key taskID:(NSUInteger)taskID {
-//    NSString *keyWithID = [self getKey:key ID:taskID];
-//    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-////    NSTimeInterval currentTime = (NSTimeInterval)[[NSDate date] timeIntervalSince1970];
-//    [defaults setInteger:time forKey:keyWithID];
-//    [defaults synchronize];
-//}
-//
-//- (void)setBeginTimeForTaskID:(NSUInteger)taskID {
-//    NSTimeInterval begin;
-//    [self setCurrentTimeForKey:CYLRequestBeginTime taskID:taskID time:&begin];
-//}
-//
-//- (void)setEndTimeForTaskID:(NSUInteger)taskID {
-//    NSTimeInterval endTime = 0;
-//    [self setCurrentTimeForKey:CYLRequestEndTime taskID:taskID time:&endTime];
-//    [self setSpentTimeForKey:CYLRequestSpentTime endTime:endTime taskID:taskID];
-//}
-//
-//- (void)setSpentTimeForKey:(NSString *)key endTime:(NSUInteger)endTime taskID:(NSUInteger)taskID {
-//    NSString *beginTimeString = [self requestBeginTimeKeyWithID:taskID];
-//    NSUInteger beginTime = [self timeFromKey:beginTimeString];
-//    NSUInteger spentTime = endTime - beginTime;
-//    [self setTime:spentTime key:CYLRequestSpentTime taskID:taskID];
-//}
-//
-//- (void)task:(CFHTTPDNSRequestTask *)task willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)response {
-//    //TODO:
-//    
-////    NSURL *url = request.URL;
-////    url.host;
-////    url.path;
-////    NSUInteger fromTime ;
-////    [self setCurrentTimeForKey:CYLRequestBeginTime taskID:task.taskID];
-////    [self setBeginTimeForTaskID:task.taskID];
-//}
 
 - (void)task:(CFHTTPDNSRequestTask *)task didReceiveRedirection:(NSURLRequest *)request response:(NSURLResponse *)response {
     NSLog(@"Redirect from [%@] to [%@].", response.URL, request.URL);

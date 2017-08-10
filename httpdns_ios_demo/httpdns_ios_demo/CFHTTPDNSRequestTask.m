@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <objc/runtime.h>
 #import <arpa/inet.h>
-#import <zlib.h>
+#import "NSData+CYLDataEncodingExtension.h"
 
 #import "CFHTTPDNSRequestTask.h"
 #import "CFHTTPDNSRequestTaskDelegate.h"
@@ -267,11 +267,12 @@ static double DEFAULT_TIMEOUT_INTERVAL = 15.0;
 - (void)handleResult {
     /*
      *  检查`Content-Encoding`，返回数据是否需要进行解码操作；
+     //TODO: 扩展编码格式
      *  此处仅做了gzip解码的处理，业务场景若确定有其他编码格式，需自行完成扩展。
      */
     NSString *contentEncoding = [self.response.headerFields objectForKey:@"Content-Encoding"];
     if (contentEncoding && [contentEncoding isEqualToString:@"gzip"]) {
-        [self.delegate task:self didReceiveData:[self ungzipData:self.resultData]];
+        [self.delegate task:self didReceiveData:[self.resultData cyl_gunzippedData]];
     } else {
         [self.delegate task:self didReceiveData:self.resultData];
     }
@@ -395,51 +396,6 @@ static double DEFAULT_TIMEOUT_INTERVAL = 15.0;
  */
 - (BOOL)isHTTPSScheme {
     return [self.originalRequest.URL.scheme isEqualToString:@"https"];
-}
-
-- (NSData *)ungzipData:(NSData *)compressedData {
-    if ([compressedData length] == 0) {
-        return compressedData;
-    }
-    
-    unsigned long full_length = [compressedData length];
-    unsigned long half_length = [compressedData length] / 2;
-    
-    NSMutableData *decompressed = [NSMutableData dataWithLength: full_length + half_length];
-    BOOL done = NO;
-    int status;
-    
-    z_stream strm;
-    strm.next_in = (Bytef *)[compressedData bytes];
-    strm.avail_in = (unsigned int) [compressedData length];
-    strm.total_out = 0;
-    strm.zalloc = Z_NULL;
-    strm.zfree = Z_NULL;
-    if (inflateInit2(&strm, (15+32)) != Z_OK) {
-        return nil;
-    }
-    while (!done) {
-        if (strm.total_out >= [decompressed length]) {
-            [decompressed increaseLengthBy: half_length];
-        }
-        strm.next_out = [decompressed mutableBytes] + strm.total_out;
-        strm.avail_out = (unsigned int) ([decompressed length] - strm.total_out);
-        status = inflate (&strm, Z_SYNC_FLUSH);
-        if (status == Z_STREAM_END) {
-            done = YES;
-        } else if (status != Z_OK) {
-            break;
-        }
-    }
-    
-    if (inflateEnd (&strm) != Z_OK) {
-        return nil;
-    }
-    if (done) {
-        [decompressed setLength: strm.total_out];
-        return [NSData dataWithData: decompressed];
-    }
-    return nil;
 }
 
 @end

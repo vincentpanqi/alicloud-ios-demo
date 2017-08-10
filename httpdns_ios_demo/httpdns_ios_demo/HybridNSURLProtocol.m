@@ -21,13 +21,11 @@ static NSString* const KHybridNSURLProtocolHKey = @"KHybridNSURLProtocol";
 
 @implementation HybridNSURLProtocol
 
-+ (BOOL)canInitWithRequest:(NSURLRequest *)request
-{
++ (BOOL)canInitWithRequest:(NSURLRequest *)request {
     NSLog(@"request.URL.absoluteString = %@",request.URL.absoluteString);
     NSString *scheme = [[request URL] scheme];
     if ( ([scheme caseInsensitiveCompare:@"http"]  == NSOrderedSame ||
-          [scheme caseInsensitiveCompare:@"https"] == NSOrderedSame ))
-    {
+          [scheme caseInsensitiveCompare:@"https"] == NSOrderedSame )) {
         //看看是否已经处理过了，防止无限循环
         if ([NSURLProtocol propertyForKey:KHybridNSURLProtocolHKey inRequest:request])
             return NO;
@@ -36,13 +34,11 @@ static NSString* const KHybridNSURLProtocolHKey = @"KHybridNSURLProtocol";
     return NO;
 }
 
-+ (NSURLRequest *)canonicalRequestForRequest:(NSURLRequest *)request
-{
++ (NSURLRequest *)canonicalRequestForRequest:(NSURLRequest *)request {
     NSMutableURLRequest *mutableReqeust = [request mutableCopy];
     
     //request截取重定向
-    if ([request.URL.absoluteString isEqualToString:sourUrl])
-    {
+    if ([request.URL.absoluteString isEqualToString:sourUrl]) {
         NSURL* url1 = [NSURL URLWithString:localUrl];
         mutableReqeust = [NSMutableURLRequest requestWithURL:url1];
     }
@@ -50,37 +46,31 @@ static NSString* const KHybridNSURLProtocolHKey = @"KHybridNSURLProtocol";
     return mutableReqeust;
 }
 
-+ (BOOL)requestIsCacheEquivalent:(NSURLRequest *)a toRequest:(NSURLRequest *)b
-{
++ (BOOL)requestIsCacheEquivalent:(NSURLRequest *)a toRequest:(NSURLRequest *)b {
     return [super requestIsCacheEquivalent:a toRequest:b];
 }
 
-- (void)startLoading
-{
+- (void)startLoading {
     NSMutableURLRequest *mutableReqeust = [[self request] mutableCopy];
     //给我们处理过的请求设置一个标识符, 防止无限循环,
     [NSURLProtocol setProperty:@YES forKey:KHybridNSURLProtocolHKey inRequest:mutableReqeust];
     
     //这里最好加上缓存判断，加载本地离线文件， 这个直接简单的例子。
-    if ([mutableReqeust.URL.absoluteString isEqualToString:sourIconUrl])
-    {
+    if ([mutableReqeust.URL.absoluteString isEqualToString:sourIconUrl]) {
             NSData* data = UIImagePNGRepresentation([UIImage imageNamed:@"medlinker"]);
             NSURLResponse* response = [[NSURLResponse alloc] initWithURL:self.request.URL MIMEType:@"image/png" expectedContentLength:data.length textEncodingName:nil];
             [self.client URLProtocol:self didReceiveResponse:response cacheStoragePolicy:NSURLCacheStorageAllowed];
             [self.client URLProtocol:self didLoadData:data];
             [self.client URLProtocolDidFinishLoading:self];
     }
-    else
-    {
+    else {
         NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:nil];
         self.task = [session dataTaskWithRequest:self.request];
         [self.task resume];
     }
 }
-- (void)stopLoading
-{
-    if (self.task != nil)
-    {
+- (void)stopLoading {
+    if (self.task != nil) {
         [self.task  cancel];
     }
 }

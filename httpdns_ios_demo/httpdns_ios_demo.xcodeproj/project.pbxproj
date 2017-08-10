@@ -21,6 +21,8 @@
 		947191EE1CEDAA9E00E13DE9 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 947191ED1CEDAA9E00E13DE9 /* SystemConfiguration.framework */; };
 		947191F01CEDAAA500E13DE9 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 947191EF1CEDAAA500E13DE9 /* CoreTelephony.framework */; };
 		94AE71BE1CDB9C3100EE4BBF /* UTDID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94AE71BD1CDB9C3100EE4BBF /* UTDID.framework */; };
+		9A6D23991F3852D30002BDED /* NSData+CYLDataEncodingExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A6D23981F3852D30002BDED /* NSData+CYLDataEncodingExtension.m */; };
+		9A6D239C1F386E2B0002BDED /* HTTPDNSCookieManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A6D239B1F386E2B0002BDED /* HTTPDNSCookieManager.m */; };
 		9A6F7BC91F31DAC9000DA300 /* NSURLRequest+CYLNSURLProtocolExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A6F7BC81F31DAC9000DA300 /* NSURLRequest+CYLNSURLProtocolExtension.m */; };
 		9A6F7BCC1F31EEFE000DA300 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A6F7BCB1F31EEFE000DA300 /* libsqlite3.0.tbd */; };
 		9A8B19DA1F1CBE82003CFE87 /* CYLRequestTimeMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8B19D91F1CBE82003CFE87 /* CYLRequestTimeMonitor.m */; };
@@ -57,6 +59,10 @@
 		947191ED1CEDAA9E00E13DE9 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		947191EF1CEDAAA500E13DE9 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		94AE71BD1CDB9C3100EE4BBF /* UTDID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UTDID.framework; sourceTree = "<group>"; };
+		9A6D23971F3852D30002BDED /* NSData+CYLDataEncodingExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSData+CYLDataEncodingExtension.h"; sourceTree = "<group>"; };
+		9A6D23981F3852D30002BDED /* NSData+CYLDataEncodingExtension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSData+CYLDataEncodingExtension.m"; sourceTree = "<group>"; };
+		9A6D239A1F386E2B0002BDED /* HTTPDNSCookieManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HTTPDNSCookieManager.h; sourceTree = "<group>"; };
+		9A6D239B1F386E2B0002BDED /* HTTPDNSCookieManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HTTPDNSCookieManager.m; sourceTree = "<group>"; };
 		9A6F7BC71F31DAC9000DA300 /* NSURLRequest+CYLNSURLProtocolExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURLRequest+CYLNSURLProtocolExtension.h"; sourceTree = "<group>"; };
 		9A6F7BC81F31DAC9000DA300 /* NSURLRequest+CYLNSURLProtocolExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURLRequest+CYLNSURLProtocolExtension.m"; sourceTree = "<group>"; };
 		9A6F7BCB1F31EEFE000DA300 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
@@ -152,8 +158,12 @@
 				F775BD5D1D1BAC8D00217FF0 /* SNIViewController.m */,
 				F7211AA01D1E6020004DD699 /* WebViewController.h */,
 				F7211AA11D1E6020004DD699 /* WebViewController.m */,
+				9A6D23971F3852D30002BDED /* NSData+CYLDataEncodingExtension.h */,
+				9A6D23981F3852D30002BDED /* NSData+CYLDataEncodingExtension.m */,
 				F7211AA31D1E64CE004DD699 /* WebViewURLProtocol.h */,
 				F7211AA41D1E64CE004DD699 /* WebViewURLProtocol.m */,
+				9A6D239A1F386E2B0002BDED /* HTTPDNSCookieManager.h */,
+				9A6D239B1F386E2B0002BDED /* HTTPDNSCookieManager.m */,
 				C589F8941D28C0A8007CC868 /* MainViewController.h */,
 				C589F8951D28C0A8007CC868 /* MainViewController.m */,
 			);
@@ -247,6 +257,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A6D23991F3852D30002BDED /* NSData+CYLDataEncodingExtension.m in Sources */,
 				942189051C59041100696D6E /* NetworkManager.m in Sources */,
 				942188F21C59011B00696D6E /* ViewController.m in Sources */,
 				C589F8961D28C0A8007CC868 /* MainViewController.m in Sources */,
@@ -257,6 +268,7 @@
 				4A1DDB3D1DFC47C80008DCF7 /* CFHTTPDNSRequestTask.m in Sources */,
 				9AADC8BE1F342C1500B7CD29 /* HybridNSURLProtocol.m in Sources */,
 				942188EC1C59011B00696D6E /* main.m in Sources */,
+				9A6D239C1F386E2B0002BDED /* HTTPDNSCookieManager.m in Sources */,
 				F7624EE71D1B7EC1004F8718 /* HTTPSSceneViewController.m in Sources */,
 				4A1DDB3C1DFC47C80008DCF7 /* CFHTTPDNSHTTPProtocol.m in Sources */,
 				9A6F7BC91F31DAC9000DA300 /* NSURLRequest+CYLNSURLProtocolExtension.m in Sources */,

@@ -34,8 +34,6 @@ static NSString *const CYLIP = @"115.159.231.178";
 static NSString *const CYLHOST = @"3g.ganji.com";
 static NSString *const  CYLOriginalUrl = @"http://3g.ganji.com/?wapadprurl2=adurl";
 
-
-
 @interface WebViewController ()
 <WKNavigationDelegate ,
 WKUIDelegate,
@@ -536,8 +534,7 @@ WKHTTPCookieStoreObserver
     }];
     // Do any additional setup after loading the view.
 }
-- (void)_schemeHandler
-{
+- (void)_schemeHandler {
     //TODO:  ios11 API
     //FIXME: what is WKURLSchemeHandler?
     
@@ -599,7 +596,7 @@ WKHTTPCookieStoreObserver
 }
 
 - (void)updateNSHTTPCookieStorageDomainFromIP:(NSString *)IP toHost:(NSString *)host {
-    NSHTTPCookieStorage *cookieStroe = [NSHTTPCookieStorage sharedHTTPCookieStorage] ;
+    NSHTTPCookieStorage *cookieStroe = [NSHTTPCookieStorage sharedHTTPCookieStorage];
     NSArray *cookies = [cookieStroe cookies];
     [[cookies copy] enumerateObjectsUsingBlock:^(NSHTTPCookie * _Nonnull cookie, NSUInteger idx, BOOL * _Nonnull stop) {
         if ([cookie.domain isEqualToString:IP]) {
@@ -615,24 +612,12 @@ WKHTTPCookieStoreObserver
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    
     //111.206.193.95
     //@"http://3g.163.com"
     NSString *originalUrl = CYLOriginalUrl;
     NSURL *url = [NSURL URLWithString:originalUrl];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [_webView loadRequest:request];
-    
-    //        [self changeCookieDomainFromIP:CYLIP toHost:CYLHOST];
-    
-}
-
-- (NSHTTPCookie *)getNewCookieFromOldCookie:(NSHTTPCookie *)oldCookie host:(NSString *)host {
-    NSMutableDictionary<NSHTTPCookiePropertyKey, id> *dict = [NSMutableDictionary dictionaryWithDictionary:oldCookie.properties];
-    dict[NSHTTPCookieDomain] = host;
-    NSHTTPCookie *cookie = [NSHTTPCookie cookieWithProperties:[dict copy]];
-    NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), cookie);
-    return cookie;
 }
 
 #pragma mark -
