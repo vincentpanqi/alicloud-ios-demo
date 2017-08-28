@@ -61,7 +61,7 @@
         NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
         for (NSHTTPCookie *cookie in cookieArray) {
             if (_cookieFilter(cookie, URL)) {
-                NSLog(@"Add a cookie: %@", cookie);
+                //NSLog(@"Add a cookie: %@", cookie);
                 [cookieStorage setCookie:cookie];
             }
         }
@@ -85,7 +85,7 @@
     NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
     for (NSHTTPCookie *cookie in [cookieStorage cookies]) {
         if (_cookieFilter(cookie, URL)) {
-            NSLog(@"Search an appropriate cookie: %@", cookie);
+            //NSLog(@"Search an appropriate cookie: %@", cookie);
             [cookieArray addObject:cookie];
         }
     }
@@ -97,7 +97,7 @@
     NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
     for (NSHTTPCookie *cookie in [cookieStorage cookies]) {
         if (_cookieFilter(cookie, URL)) {
-            NSLog(@"Delete a cookie: %@", cookie);
+            //NSLog(@"Delete a cookie: %@", cookie);
             [cookieStorage deleteCookie:cookie];
             delCount++;
         }

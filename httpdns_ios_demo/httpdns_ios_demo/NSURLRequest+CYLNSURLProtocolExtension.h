@@ -1,15 +1,22 @@
 //
-//  NSMutableURLRequest+CYLNSURLProtocolExtension.h
-//  httpdns_ios_demo
+//  NSURLRequest+CYLNSURLProtocolExtension.h
 //
-//  Created by 陈宜龙 on 28/07/2017.
-//  Copyright © 2017 alibaba. All rights reserved.
+//
+//  Created by ElonChan on 28/07/2017.
+//  Copyright © 2017 ChenYilong. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 
 @interface NSURLRequest (CYLNSURLProtocolExtension)
 
-- (NSMutableURLRequest *)cyl_getPostRequestIncludeBody;
+- (NSURLRequest *)cyl_getPostRequestIncludeBody;
+- (NSMutableURLRequest *)cyl_getMutablePostRequestIncludeBody;
+
+@end
+
+@interface NSMutableURLRequest (CYLNSURLProtocolExtension)
+
+- (void)cyl_handlePostRequestBody;
 
 @end

@@ -45,11 +45,11 @@ static HttpDnsService *httpdns;
 //        NSString *ip = [httpdns getIpByHostInURLFormat:url.host];
 //        if (ip) {
 //            // 通过HTTPDNS获取IP成功，进行URL替换和HOST头设置
-//            NSLog(@"Get IP(%@) for host(%@) from HTTPDNS Successfully!", ip, url.host);
+//            //NSLog(@"Get IP(%@) for host(%@) from HTTPDNS Successfully!", ip, url.host);
 //            NSRange hostFirstRange = [originalUrl rangeOfString:url.host];
 //            if (NSNotFound != hostFirstRange.location) {
 //                NSString *newUrl = [originalUrl stringByReplacingCharactersInRange:hostFirstRange withString:ip];
-//                NSLog(@"New URL: %@", newUrl);
+//                //NSLog(@"New URL: %@", newUrl);
 //                request.URL = [NSURL URLWithString:newUrl];
 //                [request setValue:url.host forHTTPHeaderField:@"host"];
 //            }
@@ -58,20 +58,20 @@ static HttpDnsService *httpdns;
 //        NSError *error;
 //        NSData* data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
 //        if (error != nil) {
-//            NSLog(@"Error: %@", error);
+//            //NSLog(@"Error: %@", error);
 //        } else {
-//            NSLog(@"Response: %@",response);
+//            //NSLog(@"Response: %@",response);
 //        }
 //        
 //        // 异步接口获取IP
 //        ip = [httpdns getIpByHostAsyncInURLFormat:url.host];
 //        if (ip) {
 //            // 通过HTTPDNS获取IP成功，进行URL替换和HOST头设置
-//            NSLog(@"Get IP(%@) for host(%@) from HTTPDNS Successfully!", ip, url.host);
+//            //NSLog(@"Get IP(%@) for host(%@) from HTTPDNS Successfully!", ip, url.host);
 //            NSRange hostFirstRange = [originalUrl rangeOfString:url.host];
 //            if (NSNotFound != hostFirstRange.location) {
 //                NSString *newUrl = [originalUrl stringByReplacingCharactersInRange:hostFirstRange withString:ip];
-//                NSLog(@"New URL: %@", newUrl);
+//                //NSLog(@"New URL: %@", newUrl);
 //                request.URL = [NSURL URLWithString:newUrl];
 //                [request setValue:url.host forHTTPHeaderField:@"host"];
 //            }
@@ -79,16 +79,16 @@ static HttpDnsService *httpdns;
 //
 //        data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
 //        if (error != nil) {
-//            NSLog(@"Error: %@", error);
+//            //NSLog(@"Error: %@", error);
 //        } else {
-//            NSLog(@"Response: %@",response);
+//            //NSLog(@"Response: %@",response);
 //        }
 //
 //        
 //        // 测试黑名单中的域名
 //        ip = [httpdns getIpByHostAsyncInURLFormat:@"www.taobao.com"];
 //        if (!ip) {
-//            NSLog(@"由于在降级策略中过滤了www.taobao.com，无法从HTTPDNS服务中获取对应域名的IP信息");
+//            //NSLog(@"由于在降级策略中过滤了www.taobao.com，无法从HTTPDNS服务中获取对应域名的IP信息");
 //        }
 //    });
     
@@ -104,13 +104,13 @@ static HttpDnsService *httpdns;
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     NSString *ip = [httpdns getIpByHostAsync:url.host];
     // 通过HTTPDNS获取IP成功，进行URL替换和HOST头设置
-    if (ip) {         NSLog(@"Get IP from HTTPDNS Successfully!");
+    if (ip) {         //NSLog(@"Get IP from HTTPDNS Successfully!");
         NSRange hostFirstRange = [originalUrl rangeOfString:url.host];
         if (NSNotFound != hostFirstRange.location) {
             NSString *newUrl = [originalUrl stringByReplacingCharactersInRange:hostFirstRange withString:ip];
             request.URL = [NSURL URLWithString:newUrl];
             [request setValue:url.host forHTTPHeaderField:@"host"];
-            NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), url.host);
+            //NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), url.host);
         }
     }
     
@@ -159,16 +159,16 @@ static HttpDnsService *httpdns;
  */
 //- (BOOL)shouldDegradeHTTPDNS:(NSString *)hostName {
 //    //FIXME:  linshi
-////    NSLog(@"Enters Degradation filter.");
+////    //NSLog(@"Enters Degradation filter.");
 ////    // 根据HTTPDNS使用说明，存在网络代理情况下需降级为Local DNS
 ////    if ([NetworkManager configureProxies]) {
-////        NSLog(@"Proxy was set. Degrade!");
+////        //NSLog(@"Proxy was set. Degrade!");
 ////        return YES;
 ////    }
 ////    
 ////    // 假设您禁止"www.taobao.com"域名通过HTTPDNS进行解析
 ////    if ([hostName isEqualToString:@"www.taobao.com"]) {
-////        NSLog(@"The host is in blacklist. Degrade!");
+////        //NSLog(@"The host is in blacklist. Degrade!");
 ////        return YES;
 ////    }
 //    

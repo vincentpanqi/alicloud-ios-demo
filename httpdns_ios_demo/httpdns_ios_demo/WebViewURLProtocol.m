@@ -31,7 +31,7 @@ static BOOL donotHandle = NO;
                                                   usingBlock:^(NSNotification *notif) {
                                                       //your code here
                                                       donotHandle = YES;
-                                                      NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), @"");
+                                                      //NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), @"");
                                                   }];
 }
 /**
@@ -42,9 +42,9 @@ static BOOL donotHandle = NO;
  *  @return 返回YES表示要拦截处理，返回NO表示不拦截处理
  */
 + (BOOL)canInitWithRequest:(NSURLRequest *)request {
-    NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), request);
+    //NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), request);
     if (donotHandle) {
-        NSLog(@"HTTPDNS can't resolve [%@] now.", request.URL.host);
+        //NSLog(@"HTTPDNS can't resolve [%@] now.", request.URL.host);
         return NO;
     }
     /* 防止无限循环，因为一个请求在被拦截处理过程中，也会发起一个请求，这样又会走到这里，如果不进行处理，就会造成无限循环 */
@@ -68,7 +68,7 @@ static BOOL donotHandle = NO;
      *  ***************************************************************************
      */
     if (![self canHTTPDNSResolveHost:request.URL.host]) {
-        NSLog(@"HTTPDNS can't resolve [%@] now.", request.URL.host);
+        //NSLog(@"HTTPDNS can't resolve [%@] now.", request.URL.host);
         return NO;
     }
     
@@ -77,6 +77,7 @@ static BOOL donotHandle = NO;
     // 假设原始的请求头部没有host信息，只有使用IP替换后的请求才有
     NSString *host = [mutableReq valueForHTTPHeaderField:@"host"];
     
+    //TODO:  这个需要按照业务需求进行调整，这里只是演示：
     // 假设只拦截原始请求中css的请求
     if (mutableReq && !host && [[mutableReq.HTTPMethod lowercaseString] isEqualToString:@"get"] && [mutableReq.URL.absoluteString hasSuffix:@".css"]) {
         return YES;
@@ -99,25 +100,27 @@ static BOOL donotHandle = NO;
     NSString *ip = [[HttpDnsService sharedInstance] getIpByHostAsync:url.host];
     if (ip) {
         // 通过HTTPDNS获取IP成功，进行URL替换和HOST头设置
-        NSLog(@"Get IP(%@) for host(%@) from HTTPDNS Successfully!", ip, url.host);
+        //NSLog(@"Get IP(%@) for host(%@) from HTTPDNS Successfully!", ip, url.host);
         NSRange hostFirstRange = [originalUrl rangeOfString:url.host];
         if (NSNotFound != hostFirstRange.location) {
             NSString *newUrl = [originalUrl stringByReplacingCharactersInRange:hostFirstRange withString:ip];
-            NSLog(@"New URL: %@", newUrl);
+            //NSLog(@"New URL: %@", newUrl);
             mutableReq.URL = [NSURL URLWithString:newUrl];
             [mutableReq setValue:url.host forHTTPHeaderField:@"host"];
             // 添加originalUrl保存原始URL
             [mutableReq addValue:originalUrl forHTTPHeaderField:@"originalUrl"];
         }
     }
-    return [mutableReq copy];
+    NSURLRequest *postRequestIncludeBody = [mutableReq cyl_getPostRequestIncludeBody];
+    return postRequestIncludeBody;
 }
+
 /**
  *  开始加载，在该方法中，加载一个请求
  */
 - (void)startLoading {
 //    NSMutableURLRequest *request = [self.request mutableCopy];
-    NSMutableURLRequest *request = [self.request cyl_getPostRequestIncludeBody];
+    NSMutableURLRequest *request = [self.request mutableCopy];
 
     // 表示该请求已经被处理，防止无限循环
     [NSURLProtocol setProperty:@(YES) forKey:protocolKey inRequest:request];
@@ -231,7 +234,7 @@ static BOOL donotHandle = NO;
 
 #pragma NSURLSessionDataDelegate
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveResponse:(NSURLResponse *)response completionHandler:(void (^)(NSURLSessionResponseDisposition))completionHandler {
-    NSLog(@"receive response: %@", response);
+    //NSLog(@"receive response: %@", response);
     // 获取原始URL
     NSString* originalUrl = [dataTask.currentRequest valueForHTTPHeaderField:@"originalUrl"];
     if (!originalUrl) {

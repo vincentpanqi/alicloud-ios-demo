@@ -22,7 +22,7 @@ static NSString* const KHybridNSURLProtocolHKey = @"KHybridNSURLProtocol";
 @implementation HybridNSURLProtocol
 
 + (BOOL)canInitWithRequest:(NSURLRequest *)request {
-    NSLog(@"request.URL.absoluteString = %@",request.URL.absoluteString);
+    //NSLog(@"request.URL.absoluteString = %@",request.URL.absoluteString);
     NSString *scheme = [[request URL] scheme];
     if ( ([scheme caseInsensitiveCompare:@"http"]  == NSOrderedSame ||
           [scheme caseInsensitiveCompare:@"https"] == NSOrderedSame )) {
@@ -78,19 +78,19 @@ static NSString* const KHybridNSURLProtocolHKey = @"KHybridNSURLProtocol";
 
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveResponse:(NSURLResponse *)response completionHandler:(void (^)(NSURLSessionResponseDisposition))completionHandler {
     [[self client] URLProtocol:self didReceiveResponse:response cacheStoragePolicy:NSURLCacheStorageAllowed];
-    NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), @"");
+    //NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), @"");
 
     completionHandler(NSURLSessionResponseAllow);
 }
 
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data {
-    NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), @"");
+    //NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), @"");
 
     [[self client] URLProtocol:self didLoadData:data];
 }
 
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(nullable NSError *)error {
-    NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), @"");
+    //NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), @"");
     [self.client URLProtocolDidFinishLoading:self];
 
 }

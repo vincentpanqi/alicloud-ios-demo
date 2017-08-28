@@ -112,7 +112,7 @@ static double DEFAULT_TIMEOUT_INTERVAL = 15.0;
         CFHTTPMessageSetBody(cfRequest, bodyData);
     }
     
-    NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@\n%@---\n%@", @(__PRETTY_FUNCTION__), @(__LINE__), self.swizzleRequest, [[NSString alloc] initWithData:self.swizzleRequest.HTTPBody encoding:NSUTF8StringEncoding], bodyData);
+    //NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@\n%@---\n%@", @(__PRETTY_FUNCTION__), @(__LINE__), self.swizzleRequest, [[NSString alloc] initWithData:self.swizzleRequest.HTTPBody encoding:NSUTF8StringEncoding], bodyData);
 
     // Set HTTP Header
     for (NSString *header in headFields) {
@@ -229,7 +229,7 @@ static double DEFAULT_TIMEOUT_INTERVAL = 15.0;
 - (void)stream:(NSStream *)aStream handleEvent:(NSStreamEvent)eventCode {
     switch (eventCode) {
         case NSStreamEventOpenCompleted:
-            NSLog(@"InputStream opened success.");
+            //NSLog(@"InputStream opened success.");
             break;
         case NSStreamEventHasBytesAvailable:
         {
@@ -293,8 +293,8 @@ static double DEFAULT_TIMEOUT_INTERVAL = 15.0;
         case 303:
         {
             NSString *location = self.response.headerFields[@"Location"];
-            if (location) {
-                NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), location);
+            if (location && location.length > 0) {
+                //NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), location);
                 NSURL *url = [[NSURL alloc] initWithString:location];
                 NSMutableURLRequest *mRequest = [self.swizzleRequest mutableCopy];
                 mRequest.URL = url;

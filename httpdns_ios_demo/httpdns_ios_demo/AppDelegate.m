@@ -23,9 +23,31 @@
     
     // 设置AccoutID
     [httpdns setAccountID:191863];
-    // 为HTTPDNS服务设置降级机制
-//    [httpdns setDelegateForDegradationFilter:(id < HttpDNSDegradationDelegate >)self];
-    // 允许返回过期的IP
+    
+    
+    /*!
+     *
+     //改变userAgent增加客户端标识
+     //get the original user-agent of webview
+     UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectZero];
+     NSString *oldAgent = [webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+     //    JCYACAILog(@"old agent :%@", oldAgent);
+     //add my info to the new agent
+     NSString *newAgent = [oldAgent stringByAppendingString:@"; Is258Client"];
+     ////NSLog(@"new agent :%@", newAgent);
+     //regist the new agent
+     NSDictionary *dictionnary = [[NSDictionary alloc] initWithObjectsAndKeys:newAgent, @"UserAgent",nil];
+     [[NSUserDefaults standardUserDefaults] registerDefaults:dictionnary];
+     HttpDnsService *httpdns = [[HttpDnsService alloc] initWithAccountID:139650 secretKey:@"4102ed13c31f110c1bc66ad669a47028"];
+
+     //    NSArray *preResolveHosts = @[@"m.jc258.cn", @"mappsrv.jc258.cn",@"cm.jc258.cn", @"m.yacai.com", @"mappsrv.yacai.com",@"hy.yacai.com"];
+
+     */
+
+    
+    
+
+        // 允许返回过期的IP
     [httpdns setExpiredIPEnabled:YES];
     // 打开HTTPDNS Log，线上建议关闭
     [httpdns setLogEnabled:YES];
@@ -45,8 +67,10 @@
                                   @"58.com",
                                   @"m.58.com",
                                   @"cdata.58.com",
-                                  @"passport.58.com"
+                                  @"passport.58.com",
+                                  @"feature.yoho.cn"
                                   ];
+
     // NSArray* preResolveHosts = @[@"pic1cdn.igetget.com"];
     // 设置预解析域名列表
     [httpdns setPreResolveHosts:preResolveHosts];
@@ -79,16 +103,16 @@
  * 降级过滤器，您可以自己定义HTTPDNS降级机制
  */
 //- (BOOL)shouldDegradeHTTPDNS:(NSString *)hostName {
-//    NSLog(@"Enters Degradation filter.");
+//    ////NSLog(@"Enters Degradation filter.");
 //    // 根据HTTPDNS使用说明，存在网络代理情况下需降级为Local DNS
 //    if ([NetworkManager configureProxies]) {
-//        NSLog(@"Proxy was set. Degrade!");
+//        ////NSLog(@"Proxy was set. Degrade!");
 //        return YES;
 //    }
 //    
 //    // 假设您禁止"www.taobao.com"域名通过HTTPDNS进行解析
 //    if ([hostName isEqualToString:@"www.taobao.com"]) {
-//        NSLog(@"The host is in blacklist. Degrade!");
+//        ////NSLog(@"The host is in blacklist. Degrade!");
 //        return YES;
 //    }
 //    

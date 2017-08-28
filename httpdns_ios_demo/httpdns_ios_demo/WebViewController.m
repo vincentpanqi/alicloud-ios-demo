@@ -75,11 +75,11 @@ WKHTTPCookieStoreObserver
     //    [self deleteAllNSHTTPCookie];
     
     //    [self deleteAllWKHTTPCookieStoreWithCompletionHandler:^{
-    NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), @"");
+    //NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), @"");
     
     //        WKHTTPCookieStore *cookieStroe = self.webView.configuration.websiteDataStore.httpCookieStore;
     //        [cookieStroe getAllCookies:^(NSArray<NSHTTPCookie *> * _Nonnull cookies) {
-    //            NSLog(@"All cookies %@",cookies);
+    //            //NSLog(@"All cookies %@",cookies);
     //        }];
     
     
@@ -91,7 +91,7 @@ WKHTTPCookieStoreObserver
         BOOL isIP = CYLUSEIP; //arc4random_uniform(10)%2 == 0;
         //               NSString *string = isIP ? IPString : urlString;
         //                NSURL *url = [NSURL URLWithString:string];
-        //                NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), string);
+        //                //NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), string);
         //111.206.193.95
         //@"http://3g.163.com"
         NSString *originalUrl = CYLOriginalUrl;
@@ -100,11 +100,11 @@ WKHTTPCookieStoreObserver
         
         if (isIP) {
             // 通过HTTPDNS获取IP成功，进行URL替换和HOST头设置
-            NSLog(@"Get IP(%@) for host(%@) from HTTPDNS Successfully!", ip, url.host);
+            //NSLog(@"Get IP(%@) for host(%@) from HTTPDNS Successfully!", ip, url.host);
             NSRange hostFirstRange = [originalUrl rangeOfString:url.host];
             if (NSNotFound != hostFirstRange.location) {
                 NSString *newUrl = [originalUrl stringByReplacingCharactersInRange:hostFirstRange withString:ip];
-                NSLog(@"New URL: %@", newUrl);
+                //NSLog(@"New URL: %@", newUrl);
                 request.URL = [NSURL URLWithString:newUrl];
                 [request setValue:url.host forHTTPHeaderField:@"host"];
             }
@@ -158,7 +158,7 @@ WKHTTPCookieStoreObserver
         //                         completionHandler:^(NSArray<WKWebsiteDataRecord *> * __nonnull records) {
         //                             for (WKWebsiteDataRecord *record  in records)
         //                             {
-        //                                 NSLog(@"WKWebsiteDataRecord:%@",[record description]);
+        //                                 //NSLog(@"WKWebsiteDataRecord:%@",[record description]);
         //                             }
         //                         }];
         
@@ -195,12 +195,12 @@ WKHTTPCookieStoreObserver
     //                     completionHandler:^(NSArray<WKWebsiteDataRecord *> * __nonnull records) {
     //                         for (WKWebsiteDataRecord *record  in records)
     //                         {
-    //                             NSLog(@"WKWebsiteDataRecord:%@",[record description]);
+    //                             //NSLog(@"WKWebsiteDataRecord:%@",[record description]);
     //                         }
     //                     }];
-    //    NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), @"");
+    //    //NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), @"");
     //    [self testWKCookiStore];
-    NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), @"");
+    //NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), @"");
     //    [self addNewCookie];
     //    [self changeCookieDomainFromIP:CYLIP toHost:CYLHOST];
     //    [self logCookies];
@@ -238,15 +238,15 @@ WKHTTPCookieStoreObserver
             [cookieStroe deleteCookie:cookie completionHandler:^{
                 [cookieStroe getAllCookies:^(NSArray<NSHTTPCookie *> * _Nonnull cookies) {
                     for (id cookie in cookies) {
-                        NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), cookie);
+                        //NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), cookie);
                     }
                 }];
                 
                 if ([[cookies lastObject] isEqual:cookie]) {
-                    NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), @"");
+                    //NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), @"");
                     //                    WKHTTPCookieStore *cookieStroe = self.webView.configuration.websiteDataStore.httpCookieStore;
                     [cookieStroe getAllCookies:^(NSArray<NSHTTPCookie *> * _Nonnull cookies) {
-                        //                        NSLog(@"All cookies %@",cookies);
+                        //                        //NSLog(@"All cookies %@",cookies);
                     }];
                     !theCompletionHandler ?: theCompletionHandler();
                 }
@@ -261,7 +261,7 @@ WKHTTPCookieStoreObserver
         [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
     }
     cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-    NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), cookies);
+    //NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), cookies);
     
     
 }
@@ -291,7 +291,7 @@ WKHTTPCookieStoreObserver
 - (void)copyWKHTTPCookieStoreToNSHTTPCookie {
     WKHTTPCookieStore *cookieStroe = self.webView.configuration.websiteDataStore.httpCookieStore;
     [cookieStroe getAllCookies:^(NSArray<NSHTTPCookie *> * _Nonnull cookies) {
-        NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), @"");
+        //NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), @"");
         for (NSHTTPCookie *cookie in cookies) {
             [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie:cookie];
         }
@@ -311,10 +311,10 @@ WKHTTPCookieStoreObserver
 //                !theCompletionHandler ?: theCompletionHandler();
 //                return;
 //            }
-//            //        NSLog(@"set cookie %@", timeStr);
+//            //        //NSLog(@"set cookie %@", timeStr);
 //            //缺陷，本地没有固化，App重启后，缓存消失。
 //            [cookieStroe getAllCookies:^(NSArray<NSHTTPCookie *> * _Nonnull cookies) {
-//                NSLog(@"All cookies %@",cookies);
+//                //NSLog(@"All cookies %@",cookies);
 //                NSString *message = [NSString stringWithFormat:@"%@", @([cookies count])];
 //                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"总cookie个数"message:message preferredStyle:UIAlertControllerStyleAlert];
 //                UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"ok" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
@@ -436,10 +436,10 @@ WKHTTPCookieStoreObserver
     
     NSHTTPCookie *cookie = [NSHTTPCookie cookieWithProperties:dict];
     [cookieStroe setCookie:cookie completionHandler:^{
-        //        NSLog(@"set cookie %@", timeStr);
+        //        //NSLog(@"set cookie %@", timeStr);
         //缺陷，本地没有固化，App重启后，缓存消失。
         [cookieStroe getAllCookies:^(NSArray<NSHTTPCookie *> * _Nonnull cookies) {
-            NSLog(@"All cookies %@",cookies);
+            //NSLog(@"All cookies %@",cookies);
             //- (void)showAlertIfNeeded {
             //FIXME:> ios8
             NSString *message = [NSString stringWithFormat:@"%@", @([cookies count])];
@@ -462,23 +462,23 @@ WKHTTPCookieStoreObserver
     NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
     
     for (NSHTTPCookie *cookie in cookies) {
-        NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), cookie);
+        //NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), cookie);
     }
     
 }
 
 - (void)logCookies {
     NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-    NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), cookies);
+    //NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), cookies);
     for (NSHTTPCookie *cookie in cookies) {
-        NSLog(@"🔴类名与方法名：%@（在第%@行），描述NSHTTPCookieStorage：%@", @(__PRETTY_FUNCTION__), @(__LINE__), cookie);
+        //NSLog(@"🔴类名与方法名：%@（在第%@行），描述NSHTTPCookieStorage：%@", @(__PRETTY_FUNCTION__), @(__LINE__), cookie);
     }
     
     
     WKHTTPCookieStore *cookieStroe = self.webView.configuration.websiteDataStore.httpCookieStore;
     [cookieStroe getAllCookies:^(NSArray<NSHTTPCookie *> * _Nonnull cookies) {
         for (NSHTTPCookie *cookie in cookies) {
-            NSLog(@"🔴类名与方法名：%@（在第%@行），描述WKHTTPCookieStore：%@", @(__PRETTY_FUNCTION__), @(__LINE__), cookie);
+            //NSLog(@"🔴类名与方法名：%@（在第%@行），描述WKHTTPCookieStore：%@", @(__PRETTY_FUNCTION__), @(__LINE__), cookie);
         }
     }];
 }
@@ -517,12 +517,12 @@ WKHTTPCookieStoreObserver
     //
     //    NSHTTPCookie *cookie = [NSHTTPCookie cookieWithProperties:dict];
     //    [cookieStroe setCookie:cookie completionHandler:^{
-    //        NSLog(@"set cookie %@", timeStr);
+    //        //NSLog(@"set cookie %@", timeStr);
     //    }];
     //
     //delete cookie
     //    [cookieStroe deleteCookie:cookie completionHandler:^{
-    //        NSLog(@"delete cookie");
+    //        //NSLog(@"delete cookie");
     //    }];
     
     
@@ -530,7 +530,7 @@ WKHTTPCookieStoreObserver
     
     //get cookies
     [cookieStroe getAllCookies:^(NSArray<NSHTTPCookie *> * _Nonnull cookies) {
-        NSLog(@"All cookies %@",cookies);
+        //NSLog(@"All cookies %@",cookies);
     }];
     // Do any additional setup after loading the view.
 }
@@ -548,7 +548,7 @@ WKHTTPCookieStoreObserver
 
 - (void)webView:(WKWebView *)webView startURLSchemeTask:(id <WKURLSchemeTask>)urlSchemeTask {
     //随便返回个data，可以根据需求自定义
-    NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), urlSchemeTask.description);
+    //NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), urlSchemeTask.description);
     NSData *data = [urlSchemeTask.request.URL.host dataUsingEncoding:(NSUTF8StringEncoding)];
     NSURLResponse *response = [[NSURLResponse alloc] initWithURL:urlSchemeTask.request.URL
                                                         MIMEType:@"text/html"
@@ -570,8 +570,8 @@ WKHTTPCookieStoreObserver
  我猜测，是统一存到 NSHTTPCookieStorage 中，没必要存两份。之所以会有延迟，是异步存储的，至于WKWebView独立的cookie API，操作的应该都是内存级别的，最终都是更新 NSHTTPCookieStorage 中。
  */
 - (void)webView:(WKWebView *)webView stopURLSchemeTask:(id <WKURLSchemeTask>)urlSchemeTask {
-    NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), urlSchemeTask.description);
-    NSLog(@"host %@",urlSchemeTask.request.URL.host);
+    //NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), urlSchemeTask.description);
+    //NSLog(@"host %@",urlSchemeTask.request.URL.host);
 }
 
 - (void)updateWKHTTPCookieStoreDomainFromIP:(NSString *)IP toHost:(NSString *)host {
@@ -584,7 +584,6 @@ WKHTTPCookieStoreObserver
                 NSHTTPCookie *newCookie = [NSHTTPCookie cookieWithProperties:[dict copy]];
                 [cookieStroe setCookie:newCookie completionHandler:^{
                     [self logCookies];
-                    //FIXME: `-[WKHTTPCookieStore deleteCookie:]` 在 iOS11-beta3 中依然有bug，不会执行。（后续正式版修复后，再更新该注视。）
                     [cookieStroe deleteCookie:cookie
                             completionHandler:^{
                                 [self logCookies];

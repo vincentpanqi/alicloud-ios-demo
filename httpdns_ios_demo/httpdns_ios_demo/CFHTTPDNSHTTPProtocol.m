@@ -45,12 +45,16 @@ static NSString *recursiveRequestFlagProperty = @"com.aliyun.httpdns";
  *  @return YES:拦截处理，NO:不拦截处理
  */
 + (BOOL)canInitWithRequest:(NSURLRequest *)request {
-    NSLog(@"Rry to handle request: %@.", request);
+    //NSLog(@"Rry to handle request: %@.", request);
     BOOL shouldAccept = YES;
-    
-    if (request == nil || request.URL == nil || request.URL.scheme == nil ||
-        ![request.URL.scheme isEqualToString:@"https"] ||
-        [NSURLProtocol propertyForKey:recursiveRequestFlagProperty inRequest:request] != nil) {
+    BOOL isNOTHTTPS =  ![request.URL.scheme isEqualToString:@"https"] ;
+    BOOL hasProcessed = ([NSURLProtocol propertyForKey:recursiveRequestFlagProperty inRequest:request] != nil);
+    BOOL isInvalidRequest = (request == nil || request.URL == nil || request.URL.scheme == nil);
+    if (
+        isInvalidRequest ||
+        isNOTHTTPS ||
+        hasProcessed
+        ) {
         shouldAccept = NO;
     }
     /*
@@ -69,21 +73,28 @@ static NSString *recursiveRequestFlagProperty = @"com.aliyun.httpdns";
      *  ***************************************************************************
      */
     if (shouldAccept && ![self canHTTPDNSResolveHost:request.URL.host]) {
-        NSLog(@"HTTPDNS can't resolve [%@] now.", request.URL.host);
+        //NSLog(@"HTTPDNS can't resolve [%@] now.", request.URL.host);
         shouldAccept = NO;
     }
     
     if (shouldAccept) {
-        NSLog(@"Accept request: %@.", request);
+//        NSLog(@"Accept request: %@.", request);
     } else {
-        NSLog(@"Decline request: %@.", request);
+//        NSLog(@"Decline request: %@.", request);
     }
+    
+    //FIXME: 临时做法，需要删除
+//    NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@\n%@\n%@", @(__PRETTY_FUNCTION__), @(__LINE__),request, request.URL.host, @(shouldAccept));
+//    if ([request.URL.host isEqualToString:@"mappsrv.yacai.com"] || [request.URL.host isEqualToString:@"hy.yacai.com"]) {
+//        return YES;
+//    }
     
     return shouldAccept;
 }
 
+//FIXME: 302
 + (NSURLRequest *)canonicalRequestForRequest:(NSURLRequest *)request {
-    return request;
+    return [request cyl_getPostRequestIncludeBody];
 }
 
 /**
@@ -91,13 +102,13 @@ static NSString *recursiveRequestFlagProperty = @"com.aliyun.httpdns";
  */
 - (void)startLoading {
     //TODO:
-    NSMutableURLRequest *recursiveRequest = [self.request cyl_getPostRequestIncludeBody];
+    NSMutableURLRequest *recursiveRequest = [self.request mutableCopy];
 //    NSMutableURLRequest *recursiveRequest = [[self request] mutableCopy];
     [NSURLProtocol setProperty:@YES forKey:recursiveRequestFlagProperty inRequest:recursiveRequest];
     self.startTime = [NSDate timeIntervalSinceReferenceDate];
     // 构造CFHTTPDNSRequestTask，基于CFNetwork发送HTTPS请求
     NSURLRequest *swizzleRequest = [self httpdnsResolve:recursiveRequest];
-    NSLog(@"SwizzleRequest: %@", swizzleRequest);
+    //NSLog(@"SwizzleRequest: %@", swizzleRequest);
     self.task = [[CFHTTPDNSRequestTask alloc] initWithURLRequest:recursiveRequest swizzleRequest:swizzleRequest delegate:self];
     if (self.task) {
         [self.task startLoading];
@@ -110,7 +121,7 @@ static NSString *recursiveRequestFlagProperty = @"com.aliyun.httpdns";
  *  停止加载请求
  */
 - (void)stopLoading {
-    NSLog(@"[%@] stop loading, elapsed %.1f seconds.", self.request, [NSDate timeIntervalSinceReferenceDate] - self.startTime);
+    //NSLog(@"[%@] stop loading, elapsed %.1f seconds.", self.request, [NSDate timeIntervalSinceReferenceDate] - self.startTime);
     if (self.task) {
         [self.task stopLoading];
         self.task = nil;
@@ -118,7 +129,7 @@ static NSString *recursiveRequestFlagProperty = @"com.aliyun.httpdns";
 }
 
 - (void)task:(CFHTTPDNSRequestTask *)task didReceiveRedirection:(NSURLRequest *)request response:(NSURLResponse *)response {
-    NSLog(@"Redirect from [%@] to [%@].", response.URL, request.URL);
+    //NSLog(@"Redirect from [%@] to [%@].", response.URL, request.URL);
     NSMutableURLRequest *mRequest = [request mutableCopy];
     [NSURLProtocol removePropertyForKey:recursiveRequestFlagProperty inRequest:mRequest];
     NSURLResponse *cResponse = [response copy];
@@ -135,22 +146,22 @@ static NSString *recursiveRequestFlagProperty = @"com.aliyun.httpdns";
 }
 
 - (void)task:(CFHTTPDNSRequestTask *)task didReceiveResponse:(NSURLResponse *)response cachePolicy:(NSURLCacheStoragePolicy)cachePolicy {
-    NSLog(@"Did receive response: %@", response);
+    //NSLog(@"Did receive response: %@", response);
     [self.client URLProtocol:self didReceiveResponse:response cacheStoragePolicy:cachePolicy];
 }
 
 - (void)task:(CFHTTPDNSRequestTask *)task didReceiveData:(NSData *)data {
-    NSLog(@"Did receive data.");
+    //NSLog(@"Did receive data.");
     [self.client URLProtocol:self didLoadData:data];
 }
 
 - (void)task:(CFHTTPDNSRequestTask *)task didCompleteWithError:(NSError *)error {
     
     if (error) {
-        NSLog(@"Did complete with error, %@.", error);
+        //NSLog(@"Did complete with error, %@.", error);
         [self.client URLProtocol:self didFailWithError:error];
     } else {
-        NSLog(@"Did complete success.");
+        //NSLog(@"Did complete success.");
         [self.client URLProtocolDidFinishLoading:self];
 //        [self setCurrentTimeForKey:CYLRequestEndTime taskID:task.taskID];
 //        [self setEndTimeForTaskID:task.taskID];
@@ -163,14 +174,14 @@ static NSString *recursiveRequestFlagProperty = @"com.aliyun.httpdns";
  */
 - (NSURLRequest *)httpdnsResolve:(NSURLRequest *)request {
     NSMutableURLRequest *swizzleRequest;
-    NSLog(@"HTTPDNS start resolve URL: %@", request.URL.absoluteString);
+    //NSLog(@"HTTPDNS start resolve URL: %@", request.URL.absoluteString);
     NSURL *originURL = request.URL;
     NSString *originURLStr = originURL.absoluteString;
     swizzleRequest = [request mutableCopy];
     NSString *ip = [[HttpDnsService sharedInstance] getIpByHostAsync:originURL.host];
     // 通过HTTPDNS获取IP成功，进行URL替换和HOST头设置
     if (ip) {
-        NSLog(@"Get IP from HTTPDNS Successfully!");
+        //NSLog(@"Get IP from HTTPDNS Successfully!");
         NSRange hostFirstRange = [originURLStr rangeOfString:originURL.host];
         if (NSNotFound != hostFirstRange.location) {
             NSString *newUrl = [originURLStr stringByReplacingCharactersInRange:hostFirstRange withString:ip];
