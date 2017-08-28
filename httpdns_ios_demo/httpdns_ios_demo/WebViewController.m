@@ -9,6 +9,10 @@
 #import "WebViewController.h"
 #import "WebViewURLProtocol.h"
 #import <WebKit/WebKit.h>
+//#import "Constants.h"
+#define XCODE_VERSION_GREATER_THAN_OR_EQUAL_TO_9    __has_include(<ARKit/ARKit.h>)
+
+
 //#import "NSURLProtocol+WKWebVIew.h"
 static NSString *const CYLHTTPMethod = @"http";
 static NSString *const CYLHTTPSMethod = @"https";
@@ -36,9 +40,12 @@ static NSString *const  CYLOriginalUrl = @"http://3g.ganji.com/?wapadprurl2=adur
 
 @interface WebViewController ()
 <WKNavigationDelegate ,
-WKUIDelegate,
+WKUIDelegate
+#if XCODE_VERSION_GREATER_THAN_OR_EQUAL_TO_9
+,
 WKURLSchemeHandler, //FIXME:  iOS11 API
 WKHTTPCookieStoreObserver
+#endif
 >
 
 @property (nonatomic)  WKWebView* webView;
@@ -49,6 +56,7 @@ WKHTTPCookieStoreObserver
 @end
 
 @implementation WebViewController
+#if XCODE_VERSION_GREATER_THAN_OR_EQUAL_TO_9
 
 + (void)load {
     //不在load中注册，将导致`- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation`前无法获得cookie信息
@@ -626,5 +634,5 @@ WKHTTPCookieStoreObserver
 - (void)cookiesDidChangeInCookieStore:(WKHTTPCookieStore *)cookieStore {
     [self updateWKHTTPCookieStoreDomainFromIP:CYLIP toHost:CYLHOST];
 }
-
+#endif
 @end
